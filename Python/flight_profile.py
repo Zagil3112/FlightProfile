@@ -1,6 +1,7 @@
 #Debrisk UdeA module
 
 from numpy import *
+import numpy as np
 
 from scipy.integrate import odeint
 
@@ -286,6 +287,7 @@ def ballistic(x,t): #  (A_talos,Th_talos,mdot_talos1) =(q1,q2,q3) tuple qi param
     
     D = (1/2)*rho*(v**2)*A_fustrum*Cd
     
+    """
     xprime = [-D/m-gc*sin(phi)+gdelta*cos(phi)*cos(A)-(omega**2)*r*cos(delta)*(cos(phi)*cos(A)*sin(delta)-sin(phi)*cos(delta))
               ,-gdelta*sin(A)/v*cos(phi)+v*cos(phi)*sin(A)*tan(delta)/r+(omega**2)*r*sin(A)*sin(delta)*cos(delta)/v*cos(phi)-2*omega*(tan(phi)*cos(A)*cos(delta)-sin(delta))
               ,v/r*cos(phi)-gc*cos(phi)/v-gdelta*sin(phi)*cos(A)/v+2*omega*sin(v)*cos(delta)+(omega**2)*r*cos(delta)/v*(sin(phi)*cos(A)*sin(delta)+cos(phi)*cos(delta))
@@ -306,7 +308,7 @@ def ballistic(x,t): #  (A_talos,Th_talos,mdot_talos1) =(q1,q2,q3) tuple qi param
               ,0
               ,-D/m
               ,-abs(-gc*sin(phi)+gdelta*cos(phi)*cos(A))/m]
-    """
+    
     
     return xprime 
 
@@ -441,10 +443,10 @@ def distVincenty(lat1,lat2,lon1,lon2):
 #%%
 def ned2ecefv(uNorth, vEast,wDown, lat0, lon0):
     wUp = wDown *-1
-    cosPhi = cos(lat0)
-    sinPhi = sin(lat0)
-    cosLambda = cos(lon0)
-    sinLambda = sin(lon0)
+    cosPhi = np.cos(lat0)
+    sinPhi = np. sin(lat0)
+    cosLambda = np.cos(lon0)
+    sinLambda = np.sin(lon0)
 
     t = cosPhi*wUp - sinPhi*uNorth
     w = sinPhi*wUp + cosPhi*uNorth

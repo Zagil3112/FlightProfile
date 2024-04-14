@@ -523,8 +523,9 @@ h7th	 	 =		abs((r7th-R7th)*1.e-3)
 h	 		 =	   np.concatenate((h1st ,h2nd, h3rd, h4th, h5th, h6th, h7th),axis =None)
 h_asc		 =    np.concatenate((h1st, h2nd, h3rd, h4th, h5th, h6th),axis =None)
 
-mt.plot(R1st)
-exit(0)
+mt.plot(h)
+mt.show()
+#exit(0)
 # RANGE ESTIMATION FROM VINCENTY FORMULA
 
 Ran1st	 =		distVincenty(delta1st[0],delta1st[-1],lamda1st[0],lamda1st[-1])
@@ -536,13 +537,13 @@ Ran6th	 =		distVincenty(delta1st[0],delta6th[-1],lamda1st[0],lamda6th[-1])
 Ran7th	 =		distVincenty(delta1st[0],delta7th[-1],lamda1st[0],lamda7th[-1])
 RanApo	 =		distVincenty(delta1st[0],delta7th[0],lamda1st[0],lamda7th[0])
 
-#h_100 = np.where(h>100)	# Flight in space, over 100 kilometers
-#
-#over100_0 = h_100[0][0]
-#over100_f = h_100[0][-1]
+h_100 = np.where(h>100)[0]	# Flight in space, over 100 kilometers
+
+over100_0 = h_100[0]
+over100_f = h_100[-1]
 
 
-#microg_time = t[over100_f] - t[over100_0]
+microg_time = t[over100_f] - t[over100_0]
 
 Q = dynamic_pressure(v,h) # Call the dynamic pressure function which gives the dynamic pressure [kPa]
 
@@ -574,8 +575,8 @@ print(' Range after 1st Ballistic phase     = %f Km'% ( Ran2nd*1.e-3))
 print(' Angle after 1st Ballistic phase     = %f deg'% ( phi2nd[-1]/deg))
 print(' 1st Ballistic flight time           = %f s'% ( tspan2[-1]-tspan2[0]))
 print(' Mission elapsed time                = %f s'% ( tspan2[-1]))
-print(' Drag loss				               = %f Km/s'% ((vlossdrag2nd[-1]-vlossdrag2nd[0])*1.e-3))
-print(' Gravity loss				            = %f Km/s'% ( (vlossgrav2nd[-1]-vlossgrav2nd[0])*1.e-3))
+print(' Drag loss				               = %f Km/s'% ((vlossdrag2nd[-1]-vlossdrag2nd[0])*1e-3))
+print(' Gravity loss				            = %f Km/s'% ( (vlossgrav2nd[-1]-vlossgrav2nd[0])*1e-3))
 print('\n')
 print('\n --------------THIRD FLIGHT PHASE-----------------------')
 print('\n                     Powered                            ')
@@ -716,23 +717,23 @@ h_over100 = h[over100_0:over100_f+1]
 
 #x,y,z coordenadas trayectoria total
 
-x_t = (r*1.e+3)*cos(delta*deg)*cos(lamda*deg)
-y_t = (r*1.e+3)*cos(delta*deg)*np.sin(lamda*deg)
-z_t = (r*1.e+3)*np.sin(lamda*deg)
+x_t = (r*1e+3)*np.cos(delta*deg)*np.cos(lamda*deg)
+y_t = (r*1e+3)*np.cos(delta*deg)*np.sin(lamda*deg)
+z_t = (r*1e+3)*np.sin(lamda*deg)
 
 #coordenadas en metros 
-x = radio_over100*cos(delta_over100)*cos(lamda_over100) # delta = latitud , lamda = longitud 
-y = radio_over100*cos(delta_over100)*np.sin(lamda_over100)
+x = radio_over100*np.cos(delta_over100)*np.cos(lamda_over100) # delta = latitud , lamda = longitud 
+y = radio_over100*np.cos(delta_over100)*np.sin(lamda_over100)
 z = radio_over100*np.sin(lamda_over100) 
 
 # coordenadas en km 
-x_2 = (radio_over100*cos(delta_over100)*cos(lamda_over100))*1.e-3 
-y_2 =( radio_over100*cos(delta_over100)*np.sin(lamda_over100))*1.e-3
+x_2 = (radio_over100*np.cos(delta_over100)*np.cos(lamda_over100))*1.e-3 
+y_2 =( radio_over100*np.cos(delta_over100)*np.sin(lamda_over100))*1.e-3
 z_2 =( radio_over100*np.sin(delta_over100))*1.e-3 
 
 #Velocidades VxNorth,VyEast, VzDown
-vNorth = v_over100*cos(Azimut_over100)*cos(phi_over100)
-vEast = v_over100*cos(phi_over100)*np.sin(Azimut_over100)
+vNorth = v_over100*np.cos(Azimut_over100)*np.cos(phi_over100)
+vEast = v_over100*np.cos(phi_over100)*np.sin(Azimut_over100)
 vDown= -1*v_over100*np.sin(phi_over100)
 
 #Vx,Vy,Vz
@@ -766,7 +767,7 @@ df = DataFrame(Tabelle, columns= ['Posicion','Tiempo[s]','Latitud[rad]','Longitu
                                   'Vy[km/s]','Vz[km/s]'])
 
 
-export_excel = df.to_excel (r'C:\Users\Sebastian\Personal\Proyectos\Space Debris\export_dataframe.xlsx',
+export_excel = df.to_excel (r'./export_dataframe.xlsx',
                             index = None, header=True)         
           
           
